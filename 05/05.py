@@ -22,8 +22,6 @@ def get_mapped_ranges(range, map_list):
         if runner < map[1]:
             mapped_ranges.append([runner, map[1]-runner])
             runner = map[1] 
-        if runner < map[1]:
-            break
     
     if runner < limit:
         mapped_ranges.append([runner, limit-runner])
