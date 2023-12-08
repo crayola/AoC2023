@@ -1,8 +1,8 @@
-def calculate_steps(start_position, destinations):
+def calculate_steps(start_position):
     position = start_position
     cursor = 0
     steps = 0
-    while position not in destinations:
+    while position != "ZZZ":
         position = network[position][instructions[cursor]]
         cursor += 1
         steps += 1
@@ -36,17 +36,14 @@ def get_loop(start_position):
     }
 
 
-# def get_part2(cycles):
-
-
 if __name__ == "__main__":
     instructions_str, network_str = open("input").read().split("\n\n")
     network_dictstr = dict([(x.split(" = ")) for x in network_str.split("\n")])
     network = {k: v.strip("()").split(", ") for k, v in network_dictstr.items()}
-
     instructions = [0 if x == "L" else 1 for x in instructions_str]
 
-    print(f"part 1: {calculate_steps('AAA', ['ZZZ'])}")
+    # part 1
+    print(f"part 1: {calculate_steps('AAA')}")
 
     # part 2
     starter_nodes = [x for x in network.keys() if x[2] == "A"]
