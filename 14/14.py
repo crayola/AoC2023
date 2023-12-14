@@ -18,6 +18,7 @@ class Line:
             pretilt = self.line
             self.tilt_once()
 
+    @property
     def o_count(self):
         return self.line.count('O')
 
@@ -32,12 +33,14 @@ class Platform:
         self.n_rows = len(self.lines)
         self.n_cols = len(self.cols)
 
+    @property
     def score(self):
         score = 0
         for i, line in enumerate(self.lines):
-            score += (platform.n_rows - i) * line.o_count()
+            score += (platform.n_rows - i) * line.o_count
         return score
     
+    @property
     def big_string(self):
         return "\n".join([line.line for line in self.lines]) 
 
@@ -79,16 +82,16 @@ def make_100_cycles(platform_str):
     platform = Platform(platform_str)
     for i in range(100):
         platform.cycle()
-    return platform.big_string(), platform.score()
+    return platform.big_string, platform.score
 
 
 if __name__ == "__main__":
     lines = open(INPUT).read()
     platform = Platform(lines)
     platform.tilt_north()
-    print(f"part1: {platform.score()}")
+    print(f"part1: {platform.score}")
 
-    platform_str = platform.big_string()
+    platform_str = platform.big_string
     for i in tqdm(range(10000000)):
         platform_newstr, score = make_100_cycles(platform_str)
         platform_str = platform_newstr
