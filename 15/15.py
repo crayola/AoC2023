@@ -58,9 +58,6 @@ if __name__ == '__main__':
 
     part2 = sum([(box.boxnum + 1) * lens.focal * (i+1) for box in boxes for i, lens in enumerate(box.lenses)])
     print(f"part 2: {part2}")
-
-    #part 3
-    # print(f"part 3: {part3}") 
     
 
 
