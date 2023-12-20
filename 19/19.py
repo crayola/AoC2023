@@ -132,9 +132,9 @@ if __name__ == "__main__":
     workflows = {w.name: w for w in workflows_list}
 
     part1 = sum([p.value for p in parts if p.apply(workflows) == "A"])
-    print(f"part 1: {part1}")
+    print(f"Part 1: {part1}")
 
     part2 = sum(
         [Criteria(w).count_all_possible() for w in workflows["in"].rules_that_win([])]
     )
-    print(f"part 2: {part2}")
+    print(f"Part 2: {part2}")
