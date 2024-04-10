@@ -5,6 +5,7 @@ INPUT = "input"
 
 def expand_space(space):
     expansion_rows = []
+    # test
     expansion_columns = []
     for i in range(space.shape[0] - 1, -1, -1):
         if space[i, :].sum() == 0:
