@@ -4,6 +4,18 @@ input_path = Path("./input")
 
 
 def is_symbol(ch):
+    """
+    determines whether a given character is a digit or ".". It returns `True` if
+    it is not a digit, and `False` otherwise.
+
+    Args:
+        ch (str): character to be tested for symbolicity.
+
+    Returns:
+        bool: a boolean value indicating whether the given character is a symbol
+        or not.
+
+    """
     if ch.isdigit() or ch == ".":
         return False
     else:
@@ -27,6 +39,31 @@ def get_number(i, j, lines):
 
 
 def get_surrounding_numbers(i, j, lines):
+    """
+    computes and returns an list of numbers that surround a given number within a
+    grid of lines and columns, based on neighboring cells marked as digits or non-digits.
+
+    Args:
+        i (int): 2D coordinate of the current cell being analyzed.
+        j (int): 2D coordinate of the cell where the number is sought within the
+            grid.
+        lines (ndarray (i.e., an array-like object).): 2D grid of integers to
+            search for surrounded numbers, and it is used to determine the adjacent
+            numbers to search for in each position of the grid.
+            
+            		- Lines is an array of arrays, representing a 2D matrix of numbers.
+            		- Each line in the array represents a sequence of digits.
+            		- The indices `i`, `j`, and `k` denote positions within the line and
+            matrix respectively.
+            		- The function iteratively checks if the neighboring elements are
+            also digits, and appends them to the resulting list of surrounding
+            numbers if they are.
+            
+
+    Returns:
+        list: a list of numbers found within a given cell and its neighbors.
+
+    """
     surrounding_numbers = []
     if lines[i - 1][j].isdigit():
         surrounding_numbers.append(get_number(i - 1, j, lines))
