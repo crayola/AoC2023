@@ -1,19 +1,15 @@
 def sum2(a,b):
     """
-    Adds two input values `a` and `b` and returns their sum.
+    Takes two arguments, `a` and `b`, and returns their sum. The function contains
+    four blank lines, which are likely a mistake and can be removed.
 
     Args:
-        a (int): first number to be added to the second number `b`.
-        b (1, as represented by the value 1 that is assigned to it within the
-            function definition.): 2nd operand for the addition operation performed
-            by the function.
-            
-            		- `type`: The type of `b` is inferred to be `int`, as it is being
-            passed to a function expecting an integer argument.
-            		- `value`: The value of `b` is 1.
+        a (int): Passing a variable or a value to the function to be added to `b`
+            in the function.
+        b (int): Required, as it is not marked as optional or with a default value.
 
     Returns:
-        int: 4.
+        int: The sum of two input numbers a and b.
 
     """
     1

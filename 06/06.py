@@ -5,6 +5,22 @@ def number_of_ways_to_win_1(time, distance):
     return len(victories)
 
 def number_of_ways_to_win_2(time, distance):
+    """
+    Calculates the number of ways to win a game or reach a destination by finding
+    the number of integer solutions to the equation `t = (x + y)`, where `t` is
+    the time, `x` is the time taken to reach the destination, and `y` is the time
+    taken to win the game.
+
+    Args:
+        time (float): Representing the time taken to cover the distance.
+        distance (float): Defined as the product of the number of coins on one
+            side of a board and the number of coins on the other side in a coin game.
+
+    Returns:
+        int: The number of ways to win a game, assuming that the game can be won
+        with a certain time limit and a given distance.
+
+    """
     return (
         1
         + math.floor((time + math.sqrt(time**2 - 4 * distance)) / 2.0)

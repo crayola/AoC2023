@@ -1,4 +1,15 @@
 def calculate_steps(start_position):
+    """
+    Calculates the number of steps required to navigate from a given start position
+    to the position "ZZZ" in a network, following a sequence of instructions.
+
+    Args:
+        start_position (str): Used as the initial position in a network.
+
+    Returns:
+        int: The total number of steps taken to reach the destination position "ZZZ".
+
+    """
     position = start_position
     cursor = 0
     steps = 0
@@ -12,6 +23,20 @@ def calculate_steps(start_position):
 
 
 def get_loop(start_position):
+    """
+    Determines the length of a loop in a network, where a loop is a sequence of
+    steps that repeats indefinitely, and returns the start position, loop length,
+    and adjusted destination steps.
+
+    Args:
+        start_position (int): Used as the initial position in the network for a
+            loop detection and calculation.
+
+    Returns:
+        Dict[str,int|List[int]]: An object with three key-value pairs: "loop_start"
+        (an integer), "loop_length" (an integer), and "dest_steps" (a list of integers).
+
+    """
     position = start_position
     cursor = 0
     steps = 0

@@ -3,6 +3,20 @@ from functools import cmp_to_key
 
 
 def identify_nonjoker_hand_type(c):
+    """
+    Determines the type of a non-joker hand in a card game based on the count of
+    each card rank. It returns a hand type value from 0 to 6, indicating the
+    strength of the hand.
+
+    Args:
+        c (Dict[int, int]): Used to represent a hand of cards, where the keys are
+            card ranks and the values are their respective counts.
+
+    Returns:
+        int: A numerical representation of a poker hand type, ranging from 0 (no
+        pair) to 6 (five of a kind).
+
+    """
     maxcount = max(c.values())
     mincount = min(c.values())
     if maxcount == 5:
@@ -19,6 +33,21 @@ def identify_nonjoker_hand_type(c):
 
 
 def identify_hand_type(h, part):
+    """
+    Classifies poker hands based on their composition of jokers and non-joker
+    cards. It uses a recursive approach, with the `identify_nonjoker_hand_type`
+    function (not shown) determining the type of non-joker hand.
+
+    Args:
+        h (str | List[str]): A string or a list of characters representing a poker
+            hand.
+        part (int): Used to determine the type of hand when it contains a joker.
+
+    Returns:
+        int: An integer representing the type of hand, with specific values
+        indicating different hand types.
+
+    """
     c = Counter(h)
     if h == "JJJJJ":
         return 6
@@ -40,6 +69,26 @@ def identify_hand_type(h, part):
 
 
 def compare_cards(c1, c2, part):
+    """
+    Determines the relative ranking of two cards in a deck. It takes two cards and
+    a part identifier as input, and returns -1 if the first card ranks lower, 1
+    if it ranks higher, and 0 if the cards are equal in ranking.
+
+    Args:
+        c1 (str | int): Representing a card in a deck, where a string represents
+            the card's name (e.g., 'A', 'K', 'Q', etc.) and an integer represents
+            the card's value (2-10).
+        c2 (str): Represented as a card, presumably a character or a string of one
+            character.
+        part (int): Used to determine the ordering of card values based on whether
+            a low or high card is considered the best.
+
+    Returns:
+        int: -1 if the first card is lower than the second card,
+        1 if the first card is higher than the second card,
+        and 0 if the cards are equal.
+
+    """
     ordering = "AKQJT98765432" if part == 1 else "AKQT98765432J"
     ind1, ind2 = ordering.index(c1), ordering.index(c2)
     if ind1 > ind2:
@@ -50,6 +99,23 @@ def compare_cards(c1, c2, part):
 
 
 def compare_hands(h1, h2, part):
+    """
+    Determines the relative strength of two poker hands. It first compares the
+    hand types, then the individual cards within each hand, returning 1 if hand 1
+    is stronger, -1 if hand 2 is stronger, and 0 if they are equal.
+
+    Args:
+        h1 (List[Dict[str, Any]]): Representing a hand of cards.
+        h2 (List[Dict[str, Any]]): Represented as a hand of cards, likely a list
+            of five dictionaries, where each dictionary contains information about
+            a card, such as its rank and suit.
+        part (str): Passed to the `identify_hand_type` and `compare_cards` functions.
+
+    Returns:
+        int: 1 if the first hand is stronger, -1 if the second hand is stronger,
+        and 0 if the hands are equal.
+
+    """
     h1_type, h2_type = identify_hand_type(h1, part), identify_hand_type(h2, part)
     if h1_type > h2_type:
         return 1

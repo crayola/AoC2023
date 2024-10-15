@@ -3,6 +3,25 @@ S_TILE = "|"
 
 
 def find_next(previous, current, lines):
+    """
+    Determines the next position of an object based on its current position and
+    the tile it is on. It handles movement along vertical lines, horizontal lines,
+    and specific shapes ("L", "J", "7", and "F") by adjusting the object's position
+    accordingly.
+
+    Args:
+        previous (Tuple[int, int]): Representing the coordinates of the previous
+            position of a character in a grid.
+        current (Tuple[int, int]): Representing the coordinates of the current
+            position in a grid.
+        lines (List[List[str]]): Containing a 2D grid of strings where each string
+            represents a tile in a map.
+
+    Returns:
+        Tuple[int,int]: A two-dimensional coordinate representing the next position
+        in a grid.
+
+    """
     tile = lines[current[0]][current[1]]
 
     if tile == "|":

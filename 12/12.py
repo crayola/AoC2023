@@ -17,6 +17,21 @@ def unfold(rec):
 
 @cache
 def count_possible_solutions(rec, encoding):
+    """
+    Calculates the number of possible solutions to a given puzzle encoded in a
+    string `encoding` based on a given record `rec`. It recursively explores all
+    possible combinations of '.' and '#' characters.
+
+    Args:
+        rec (str): Representing a given record.
+        encoding (List[int]): Used to indicate the length of each part of a string
+            in the `rec` parameter that should be a certain character.
+
+    Returns:
+        int: The number of possible solutions for the given recursive string `rec`
+        and encoding `encoding`.
+
+    """
     if rec == "":
         return 1 if len(encoding) == 0 else 0
     if len(encoding) == 0:
