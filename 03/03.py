@@ -5,15 +5,16 @@ input_path = Path("./input")
 
 def is_symbol(ch):
     """
-    Determines whether a given character is a symbol by checking if it is not a
-    digit and not a decimal point. It returns `True` for all other characters,
-    indicating they are symbols.
+    Determines if a given character is a symbol, considering it as a symbol if it
+    is not a digit and not a decimal point.
 
     Args:
-        ch (str): Representing a single character.
+        ch (str): Representing a character, typically a single Unicode code point,
+            that is being evaluated to determine if it is a symbol.
 
     Returns:
-        bool: True if the input character is not a digit or a dot, and False otherwise.
+        bool: True if the input character is not a digit or a decimal point, and
+        False otherwise.
 
     """
     if ch.isdigit() or ch == ".":
@@ -40,23 +41,22 @@ def get_number(i, j, lines):
 
 def get_surrounding_numbers(i, j, lines):
     """
-    Returns a list of numbers found in the surrounding cells of a given position
-    `(i, j)` within a 2D grid of lines, considering both horizontal and vertical
-    neighbors, as well as diagonals when the immediate horizontal or vertical
-    neighbors are not numbers.
+    Returns a list of digits surrounding a given position in a 2D grid of lines.
+    It checks the immediate neighbors (up, down, left, right) and their diagonals
+    for digits.
 
     Args:
-        i (int): Used to represent the row index of a grid of numbers, where the
-            top row is at index 0.
-        j (int): Used as the column index in the 2D list `lines` to access elements
-            at a specific x-coordinate.
-        lines (List[List[str]]): Representing a 2D grid of strings, where each
-            string is a character or digit from a text representation of a Sudoku
-            puzzle.
+        i (int): Used to identify the row index in the `lines` list, where `lines`
+            is a list of strings, each representing a row in a grid.
+        j (int): Used to represent the column index of a 2D list `lines`. It
+            determines the position of a number in the grid.
+        lines (List[List[str]]): Representing a 2D list of strings, where each
+            inner list represents a line in a grid, and each string represents a
+            character in that line.
 
     Returns:
         List[int]: A list of integers representing the numbers surrounding a given
-        position in a 2D grid, excluding non-digit characters.
+        position in a 2D list of strings.
 
     """
     surrounding_numbers = []

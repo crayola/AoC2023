@@ -1,17 +1,15 @@
 def get_prediction(line):
     """
-    Generates a prediction based on a given input line of numbers, by iteratively
-    calculating the differences between adjacent elements and summing the last
-    difference at each depth.
+    Calculates a prediction based on a given input `line`. It generates a series
+    of differences in the input values and sums the last value of each difference
+    series to produce the prediction.
 
     Args:
-        line (List[int]): Represented as a sequence of integers, likely representing
-            a line segment in a geometric or numerical context, where each integer
-            corresponds to a point's x-coordinate.
+        line (List[int]): Represented as a list of integers, where each integer
+            in the list represents a value in a sequence.
 
     Returns:
-        int: The sum of the last element of each difference array calculated at
-        each depth.
+        int: A prediction based on the input sequence `line`.
 
     """
     diff = [line]
@@ -27,17 +25,20 @@ def get_prediction(line):
 
 def get_postdiction(line):
     """
-    Calculates the postdiction of a given line. It iteratively calculates differences
-    between adjacent points in the line, then calculates the first difference of
-    the last differences, which represents the postdiction.
+    Calculates the postdiction of a given sequence. It iteratively computes
+    differences between elements in the sequence, stops when differences are
+    constant, and then calculates the final postdiction by summing up differences
+    in reverse order.
 
     Args:
-        line (List[int]): Expected to be a list of consecutive integers representing
-            a sequence of numbers.
+        line (List[int]): Represented as a list of integers, presumably representing
+            a sequence of values.
 
     Returns:
-        int: The predicted value of the sequence in the input line, calculated
-        based on the differences between consecutive elements in the sequence.
+        int: The difference between the first element of the last difference list
+        and the initial prediction, calculated by subtracting the previous prediction
+        from the first element of each difference list, working backwards from the
+        last list.
 
     """
     diff = [line]

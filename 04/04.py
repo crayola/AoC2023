@@ -3,15 +3,17 @@ from collections import defaultdict
 
 def calculate_intersect_size(card: str):
     """
-    Calculates the size of the intersection set between two sets of cards, one
-    considered winning and the other a draw, based on their split card values.
+    Determines the size of the intersection between two sets of cards, 'winning'
+    and 'draw', by splitting the input string into these two sets and finding their
+    common elements.
 
     Args:
-        card (str*): Assumed to be a string containing two cards separated by a
-            "|" character, where each card is a space-separated string of items.
+        card (str): Expected to contain a string representing a card, which is a
+            combination of two lines separated by a "|".
 
     Returns:
-        int: The size of the intersection between the winning and draw sets of cards.
+        int: The number of elements common to the two sets of cards, namely the
+        winning and draw sets, after splitting the input string into these two sets.
 
     """
     winning, draw = [x.split() for x in card.split("|")]

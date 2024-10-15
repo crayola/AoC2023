@@ -2,22 +2,19 @@ import math
 
 def number_of_ways_to_win_1(time, distance):
     """
-    Calculates the number of ways a runner can win a race by having a faster average
-    speed than the opponent. It takes time and distance as inputs and returns the
-    count of valid times based on the condition (time - t) * t > distance.
+    Calculates the number of valid racing times, given a maximum time and a distance.
+    It returns the count of times where the difference between the maximum time
+    and the valid time is greater than the distance.
 
     Args:
-        time (int): Representing the maximum number of turns or moves available
-            in a game, typically ranging from 1 to any positive integer. Its value
-            determines the possible combinations of moves that can be made.
-        distance (int): Used to calculate the number of ways a certain victory
-            condition can be achieved in a race. The specific nature of this
-            condition is not explicitly stated.
+        time (int): Representing the total amount of time available to complete a
+            race or a certain activity.
+        distance (int): Assumed to be the maximum distance a runner can cover in
+            a given time.
 
     Returns:
-        int: The number of possible victories in a game, where each victory is
-        represented by a valid time at which a player can win, given a maximum
-        time and a distance.
+        int: The number of possible speeds at which a race can be won, given a
+        time limit and a distance.
 
     """
     victories = [t for t in range(time+1) if (time - t) * t > distance]
@@ -25,19 +22,17 @@ def number_of_ways_to_win_1(time, distance):
 
 def number_of_ways_to_win_2(time, distance):
     """
-    Calculates the number of possible ways to win a race, given the time and
-    distance between two points. It uses the quadratic formula to find the roots
-    of a quadratic equation, representing the time it takes to travel the distance.
+    Calculates the number of ways to win a game, where a win is achieved by crossing
+    a certain distance within a given time, using a quadratic equation to find the
+    number of possible steps.
 
     Args:
-        time (float): Representing the time taken by a runner to cover a certain
-            distance.
-        distance (float): Interpreted as the coefficient `b` in the quadratic
-            equation `at^2 + bt + c = 0`, where `a = 1` and `c = -distance`.
+        time (float): Representing the time it takes to walk a certain distance.
+        distance (int): Used in the quadratic formula to calculate the discriminant.
 
     Returns:
-        int: The number of different ways to win a game given time and distance
-        constraints, based on a quadratic equation solution.
+        int: The number of distinct ways a character can move from one position
+        to another, given the time and distance constraints.
 
     """
     return (
