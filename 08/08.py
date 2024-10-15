@@ -1,13 +1,15 @@
 def calculate_steps(start_position):
     """
-    Calculates the number of steps required to navigate from a given start position
-    to the position "ZZZ" in a network, following a sequence of instructions.
+    Calculates the minimum number of steps required to navigate from a given start
+    position to the destination "ZZZ" in a network. It follows a set of instructions,
+    potentially looping back to the beginning when the end is reached.
 
     Args:
-        start_position (str): Used as the initial position in a network.
+        start_position (str): Initialized with a string representing the starting
+            position in a network.
 
     Returns:
-        int: The total number of steps taken to reach the destination position "ZZZ".
+        int: The total number of steps taken to reach the position "ZZZ".
 
     """
     position = start_position
@@ -24,17 +26,20 @@ def calculate_steps(start_position):
 
 def get_loop(start_position):
     """
-    Determines the length of a loop in a network, where a loop is a sequence of
-    steps that repeats indefinitely, and returns the start position, loop length,
-    and adjusted destination steps.
+    Determines the loop length and destination steps in a network by following a
+    sequence of instructions, handling loops and caching results for efficiency.
 
     Args:
-        start_position (int): Used as the initial position in the network for a
-            loop detection and calculation.
+        start_position (int): Used to initialize the `position` variable, which
+            represents the current network position. It is the starting point for
+            finding a loop in the network.
 
     Returns:
-        Dict[str,int|List[int]]: An object with three key-value pairs: "loop_start"
-        (an integer), "loop_length" (an integer), and "dest_steps" (a list of integers).
+        Dict[str,int|List[int]]: A dictionary containing three key-value pairs:
+        - "loop_start" with the start position of the loop,
+        - "loop_length" with the length of the loop,
+        - "dest_steps" with a list of steps required to reach each destination
+        point in the loop.
 
     """
     position = start_position

@@ -6,20 +6,21 @@ input_path = Path('./input')
 
 def part1_criterion(game_id, draws: List[Dict]):
     """
-    Checks each draw in the list to see if any of the color quantities exceed their
-    respective maximums (red: 12, green: 13, blue: 14). If any exceed, it returns
-    0; otherwise, it returns the game ID as an integer.
+    Checks if a given game ID meets certain criteria based on the number of red,
+    green, and blue draws. It iterates through a list of draws, ensuring none
+    exceed specified thresholds. If any draw exceeds the threshold, the function
+    returns 0; otherwise, it returns the integer value of the game ID.
 
     Args:
-        game_id (int): Converted to an integer before being returned as the
-            function's result.
+        game_id (int): Passed as an integer to the function, where it is implicitly
+            converted to an integer using the `int()` function before being returned.
         draws (List[Dict]*): Expected to be a list of dictionaries, where each
-            dictionary represents a draw and contains keys for 'red', 'green', and
-            'blue' with their respective values.
+            dictionary represents a draw and may contain keys 'red', 'green', and
+            'blue' representing the quantities of each color drawn.
 
     Returns:
-        int|0: 0 if any draw in the list exceeds its color limit, and the game_id
-        as an integer otherwise.
+        int|0: 0 if any of the color quantities in the draws exceed their respective
+        maximums, otherwise the integer value of game_id.
 
     """
     for draw in draws:
@@ -29,19 +30,20 @@ def part1_criterion(game_id, draws: List[Dict]):
     
 def parse_game(game_str: str):
     """
-    Breaks down a string representation of a game into its constituent parts. It
-    extracts the game ID, splits the game into individual draws, and parses each
-    draw into a structured format.
+    Parses a string representing a game into a dictionary containing the game's
+    ID and a list of draws. It splits the input string, extracts the game ID, and
+    uses a helper function `parse_draw` to process each draw.
 
     Args:
-        game_str (str*): Expected to contain a string representing a game, where
-            the game is separated from its ID by a colon, and different draws are
-            separated by semicolons.
+        game_str (str*): Expected to be a string containing game information in a
+            specific format, where it is split into game ID and draws by a colon
+            and semicolon respectively.
 
     Returns:
-        Dict[str,Union[str,List[Dict]]]: A dictionary containing two key-value pairs:
-        - `game_id`: a string representing the unique identifier of the game.
-        - `draws`: a list of dictionaries, where each dictionary represents a draw
+        Dict[str,Union[str,List[Dict]]]: A dictionary containing two keys: 'game_id'
+        and 'draws'.
+        The value of 'game_id' is a string representing the game ID.
+        The value of 'draws' is a list of dictionaries, each representing a draw
         in the game.
 
     """
@@ -53,16 +55,16 @@ def parse_game(game_str: str):
 
 def parse_draw(draw_str: str):
     """
-    Transforms a comma-separated string of drawing elements into a dictionary where
-    keys are colors and values are corresponding integer values.
+    Parses a string of comma-separated values into a dictionary, where each key
+    is a color and the corresponding value is the number associated with it.
 
     Args:
-        draw_str (str*): Represented as a string of comma-separated values, where
-            each value is a space-separated pair of a number and a color.
+        draw_str (str*): Represented as a string containing comma-separated values,
+            where each value is in the format 'number color'.
 
     Returns:
-        Dict[str,int]: A dictionary where keys are colors and values are integers
-        representing the corresponding draw values.
+        Dict[str,int]: A dictionary where keys are colors and values are corresponding
+        drawing values.
 
     """
     draw = {}
@@ -75,18 +77,17 @@ def parse_draw(draw_str: str):
 
 def calculate_power(draws: List[Dict]):
     """
-    Determines the maximum number of red, blue, and green balls drawn in a series
-    of draws and returns their product. It assumes each draw is a dictionary with
-    keys 'red', 'blue', and 'green' representing the number of each color drawn.
+    Calculates the product of the maximum values of red, blue, and green draws
+    from a list of dictionaries.
 
     Args:
-        draws (List[Dict]*): Expected to be a list of dictionaries, where each
-            dictionary represents a draw and contains keys 'red', 'blue', and
-            'green' with integer values.
+        draws (List[Dict]*): Represented as a list of dictionaries, where each
+            dictionary contains key-value pairs representing the number of red,
+            blue, and green draws.
 
     Returns:
-        int: The product of the maximum number of red, blue, and green draws across
-        all input dictionaries.
+        int: The product of the maximum values of red, blue, and green from the
+        input list of dictionaries.
 
     """
     reds = 0

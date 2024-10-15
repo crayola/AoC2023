@@ -1,24 +1,43 @@
 import math
 
 def number_of_ways_to_win_1(time, distance):
+    """
+    Calculates the number of ways a runner can win a race by having a faster average
+    speed than the opponent. It takes time and distance as inputs and returns the
+    count of valid times based on the condition (time - t) * t > distance.
+
+    Args:
+        time (int): Representing the maximum number of turns or moves available
+            in a game, typically ranging from 1 to any positive integer. Its value
+            determines the possible combinations of moves that can be made.
+        distance (int): Used to calculate the number of ways a certain victory
+            condition can be achieved in a race. The specific nature of this
+            condition is not explicitly stated.
+
+    Returns:
+        int: The number of possible victories in a game, where each victory is
+        represented by a valid time at which a player can win, given a maximum
+        time and a distance.
+
+    """
     victories = [t for t in range(time+1) if (time - t) * t > distance]
     return len(victories)
 
 def number_of_ways_to_win_2(time, distance):
     """
-    Calculates the number of ways to win a game or reach a destination by finding
-    the number of integer solutions to the equation `t = (x + y)`, where `t` is
-    the time, `x` is the time taken to reach the destination, and `y` is the time
-    taken to win the game.
+    Calculates the number of possible ways to win a race, given the time and
+    distance between two points. It uses the quadratic formula to find the roots
+    of a quadratic equation, representing the time it takes to travel the distance.
 
     Args:
-        time (float): Representing the time taken to cover the distance.
-        distance (float): Defined as the product of the number of coins on one
-            side of a board and the number of coins on the other side in a coin game.
+        time (float): Representing the time taken by a runner to cover a certain
+            distance.
+        distance (float): Interpreted as the coefficient `b` in the quadratic
+            equation `at^2 + bt + c = 0`, where `a = 1` and `c = -distance`.
 
     Returns:
-        int: The number of ways to win a game, assuming that the game can be won
-        with a certain time limit and a given distance.
+        int: The number of different ways to win a game given time and distance
+        constraints, based on a quadratic equation solution.
 
     """
     return (

@@ -6,14 +6,15 @@ INPUT = "input"
 
 class Line:
     """
-    Represents a line of text with a dynamic 'O' character placement. It can be
-    tilted by swapping '.O' with 'O.' until no further changes occur. The class
-    also tracks the total 'O' count and provides a string representation of the line.
+    Describes a line of text with a specific formatting convention, where dots and
+    'O's are used to represent a line. It provides methods to tilt the line once
+    or multiple times, count the number of 'O's, and returns a string representation
+    of the line.
 
     Attributes:
-        line (str): Initialized in the `__init__` method by joining the input
-            `line` parameter into a single string, which is then stored in the
-            `line` attribute of the class instance.
+        line (str): Initialized in the `__init__` method by joining the `line`
+            parameter into a single string using the `"".join()` method. It stores
+            the input string in a normalized format.
 
     """
     def __init__(self, line):
@@ -24,8 +25,7 @@ class Line:
 
     def tilt(self):
         """
-        Iterates until the line's orientation is stable, indicating no further
-        tilting is needed.
+        Continuously calls `tilt_once` until the line's orientation stops changing.
 
         """
         pretilt = self.line
@@ -36,6 +36,13 @@ class Line:
 
     @property
     def o_count(self):
+        """
+        Counts the occurrences of the character 'O' in the line.
+
+        Returns:
+            int: The number of occurrences of the character 'O' in the string `self.line`.
+
+        """
         return self.line.count('O')
 
     def __repr__(self):
@@ -44,32 +51,34 @@ class Line:
 
 class Platform:
     """
-    Represents a 2D grid of lines, where each line is an instance of the `Line`
-    class. It provides properties to calculate the score and a string representation
-    of the platform, as well as methods to tilt the platform and cycle through
-    different orientations.
+    Represents a two-dimensional grid of lines, where each line is an instance of
+    the `Line` class. It provides methods to manipulate the grid through rotations
+    and tilts, calculating scores and generating string representations of the grid.
 
     Attributes:
-        lines (List[Line]): Initialized in the `__init__` method. It contains a
-            list of `Line` objects, where each `Line` object represents a row of
-            the platform, stripped of leading and trailing whitespace.
-        cols (List[Line]): Created by transposing the `lines` attribute, effectively
-            treating each column of the original grid as a single line.
-        n_rows (int): Calculated as the number of elements in the list `self.lines`,
-            which represents the rows of the platform.
-        n_cols (int): Calculated as the number of columns in the platform, which
-            is the length of the list of column objects (`self.cols`).
+        lines (List[Line]): Initialized in the `__init__` method. It stores a list
+            of `Line` objects, each representing a row of the platform, created
+            from input strings after stripping newline characters and splitting
+            into individual lines.
+        cols (List[Line]): Initialized in the `__init__` method by transposing the
+            `lines` attribute using the `zip` function and mapping each row to a
+            `Line` object.
+        n_rows (int): Initialized in the `__init__` method as the length of the
+            `lines` list, which represents the number of rows in the platform.
+        n_cols (int): Initialized in the `__init__` method to the length of
+            `self.cols`, which is calculated by transposing the `lines` attribute,
+            effectively counting the number of columns in the platform.
 
     """
     def __init__(self, lines):
         """
-        Initialize a platform object. It takes a string of text as input, splits
-        it into lines, and then splits each line into columns. It stores the lines
-        and columns in the instance variables `self.lines` and `self.cols` respectively.
+        Initializes the class with a list of lines, strips newline characters,
+        creates Line objects for each line, and creates Line objects for each
+        column, storing the number of rows and columns in instance variables.
 
         Args:
-            lines (str | List[str]): Initialized with a string or a list of strings,
-                where each string represents a line of text.
+            lines (str | List[str]): Passed to the `__init__` method of the class
+                instance.
 
         """
         self.lines = [Line(line.strip()) for line in lines.strip().split('\n')]
@@ -80,13 +89,12 @@ class Platform:
     @property
     def score(self):
         """
-        Calculates the total score of the platform by iterating over its lines,
-        where each line's score is determined by its position and the number of
-        objects on it.
+        Calculates the overall score of the platform based on the number of occupied
+        cells in each line, with a higher score for lines closer to the bottom.
 
         Returns:
-            int: Calculated based on the number of lines, their positions, and the
-            number of objects (`o_count`) in each line.
+            int: Calculated based on the number of lines in the object, the row
+            count of the platform, and the line count of each line in the object.
 
         """
         score = 0
@@ -96,18 +104,32 @@ class Platform:
     
     @property
     def big_string(self):
+        """
+        Constructs a large string by joining each line of text from the lines
+        attribute with a newline character.
+
+        Returns:
+            str: A string consisting of all lines in the object, joined by newline
+            characters.
+
+        """
         return "\n".join([line.line for line in self.lines]) 
 
     def tilt_north(self):
+        """
+        Rotate each column of the platform to their respective tilt angles, then
+        recreate the lines of the platform by taking the horizontal cross-sections
+        of the tilted columns.
+
+        """
         for col in self.cols:
             col.tilt()
         self.lines = list(map(Line, zip(*[cols.line for cols in self.cols])))
 
     def tilt_south(self):
         """
-        Reverses the order of each line segment within each column, applies a tilt
-        transformation, and then reverses the order again. It then generates new
-        line segments for the platform by transposing the lines of the columns.
+        Reverses the orientation of each column's line, applies a tilt transformation,
+        and then reverses the line back to its original orientation.
 
         """
         for col in self.cols:
@@ -117,15 +139,21 @@ class Platform:
         self.lines = list(map(Line, zip(*[cols.line for cols in self.cols])))
 
     def tilt_west(self):
+        """
+        Tilts each line in the platform to the west and transposes the lines to
+        create columns, resulting in a new set of columns that are perpendicular
+        to the original lines.
+
+        """
         for line in self.lines:
             line.tilt()
         self.cols = list(map(Line, zip(*[line.line for line in self.lines])))
 
     def tilt_east(self):
         """
-        Reverses the characters in each line of a platform, tilts each line, and
-        then reverses the characters back to their original order, effectively
-        tilting the platform eastward.
+        Reverses the order of characters in each line of a platform, applies a
+        tilt transformation to each character, and then reverses the order of
+        characters again. It also restructures the platform into columns.
 
         """
         for line in self.lines:
@@ -136,11 +164,8 @@ class Platform:
 
     def cycle(self):
         """
-        Rotates the platform through four positions:
-        - Tilt north
-        - Tilt west
-        - Tilt south
-        - Tilt east.
+        Rotates the platform by tilting it in a clockwise direction, sequentially
+        in the north, west, south, and east directions.
 
         """
         self.tilt_north()
@@ -154,16 +179,17 @@ class Platform:
 @cache
 def make_100_cycles(platform_str):
     """
-    Cycles a `Platform` object 100 times based on the provided `platform_str`, and
-    returns the resulting `big_string` and `score`.
+    Executes a platform's cycle 100 times, caches the results, and returns two
+    values: a long string generated by the platform and its final score after the
+    cycles.
 
     Args:
-        platform_str (str): Used to initialize a Platform object with the specified
-            platform string.
+        platform_str (str): Passed to the `Platform` class's constructor to
+            initialize a `Platform` object.
 
     Returns:
-        Tuple[str,int]: A tuple containing two elements: `big_string` of type `str`
-        and `score` of type `int`.
+        tuple[str,int]: A tuple containing the `big_string` and `score` attributes
+        of the `Platform` object after 100 cycles.
 
     """
     platform = Platform(platform_str)

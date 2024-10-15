@@ -2,16 +2,16 @@ INPUT = 'input'
 
 def get_value(step):
     """
-    Calculates a hash value based on input string `step` by iteratively applying
-    a formula combining ASCII values of characters, multiplication, and modulo
-    operation to produce a final value between 0 and 255.
+    Calculates a hash value for a given string `step` by iterating over each
+    character, multiplying the current value by 17, adding the ASCII value of the
+    character, and taking the modulus by 256.
 
     Args:
-        step (str): Expected to be a single character string.
+        step (str): Expected to be a string containing a single character.
 
     Returns:
-        int: Derived from the input string `step` through a transformation involving
-        ASCII values, multiplication, and modulo operation.
+        int: A hash value calculated based on the input string `step`, using a
+        combination of ASCII values and modular arithmetic.
 
     """
     current_value = 0
@@ -21,17 +21,30 @@ def get_value(step):
 
 class Lens:
     """
-    Represents a lens with a label and focal length. It initializes a lens with a
-    given label and focal length, and provides a string representation of the lens
-    using its label and focal length.
+    Represents a lens with a label and focal length, allowing instances to be
+    created with specific attributes. The `__repr__` method provides a string
+    representation of the lens, including its label and focal length.
 
     Attributes:
-        label (str): Assigned a value in the constructor `__init__` method.
-        focal (int): Initialized in the `__init__` method with a value converted
-            to an integer.
+        label (str): Assigned a value in the `__init__` method. It stores a string
+            that represents the name or description of the lens.
+        focal (int): Initialized through the `__init__` method, where it is set
+            to the value of the `focal` parameter passed to the method after being
+            converted to an integer.
 
     """
     def __init__(self, label, focal):
+        """
+        Initializes a new instance of the Lens class by setting two instance
+        variables: `label` and `focal`. The `focal` value is converted to an integer.
+
+        Args:
+            label (str): Assigned to the instance variable `self.label`, indicating
+                that it is used to store a descriptive name or identifier for the
+                object.
+            focal (int): Converted from its original type to an integer.
+
+        """
         self.label = label
         self.focal = int(focal)
 
@@ -41,38 +54,56 @@ class Lens:
 
 class Box:
     """
-    Represents a container for lenses, identified by a unique box number. It allows
-    adding and updating lenses with specified labels and focal lengths, while
-    removing lenses based on their labels.
+    Represents a container for lenses with unique labels. It has methods to add
+    lenses, replace existing lenses with the same label, and remove lenses by
+    label. A box can be represented as a string, including its number and contents.
 
     Attributes:
-        boxnum (int): Initialized in the `__init__` method with a given `boxnum`
-            parameter.
-        lenses (List[Lens]): Initialized in the `__init__` method with an empty
-            list. It stores Lens objects, representing individual lenses within
-            the box.
+        boxnum (int): Initialized with the value of the `boxnum` parameter passed
+            to the `__init__` method.
+        lenses (List[Dict[str,int]]): Initialized in the `__init__` method as an
+            empty list, which stores instances of the `Lens` class.
 
     """
     def __init__(self, boxnum):
+        """
+        Initializes a new Box object with a specified box number and an empty list
+        of lenses. The box number is stored as an instance variable, and the lenses
+        list is initialized to store lenses associated with the box.
+
+        Args:
+            boxnum (int): Assigned to the instance variable `self.boxnum`, indicating
+                a unique identifier for the object being initialized, likely
+                representing a box or container.
+
+        """
         self.boxnum = boxnum
         self.lenses = []
 
     def remove_lens(self, label):
+        """
+        Deletes a lens from the Box instance's list of lenses, based on a label
+        match. The lens to be removed is identified by its label, which must be a
+        unique attribute of each lens.
+
+        Args:
+            label (str): Used to identify a lens to be removed from the `self.lenses`
+                list.
+
+        """
         for lens in self.lenses:
             if lens.label == label: 
                 self.lenses.remove(lens)
 
     def add_lens(self, label, focal):
         """
-        Updates the Box instance by adding a new lens or replacing an existing
-        lens with the same label. It checks if a lens with the given label already
-        exists, and if so, replaces it; otherwise, it adds the new lens to the
-        list of lenses.
+        Adds a new lens to the existing collection of lenses in the Box instance,
+        replacing any existing lens with the same label, or appending the new lens
+        if no matching label exists.
 
         Args:
-            label (str): Used to identify a lens uniquely within a collection of
-                lenses.
-            focal (float): Representing the focal length of the lens.
+            label (str): Used to identify a lens uniquely among a collection of lenses.
+            focal (float): Representing the focal length of a lens.
 
         """
         new_lens = Lens(label, focal) 
@@ -83,6 +114,15 @@ class Box:
         self.lenses.append(new_lens)
 
     def __repr__(self):
+        """
+        Returns a string representation of the Box object, including its number
+        and contents, if any, formatted as a sentence for easy understanding.
+
+        Returns:
+            str|None: A string representation of the object, describing the box
+            number and its contents, or an empty string if the box is empty.
+
+        """
         boxstr = f"Box {self.boxnum} containing {self.lenses}" if self.lenses else ""
         return boxstr
 

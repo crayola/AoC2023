@@ -6,15 +6,14 @@ input_path = Path("./input")
 def is_symbol(ch):
     """
     Determines whether a given character is a symbol by checking if it is not a
-    digit and not a decimal point.
+    digit and not a decimal point. It returns `True` for all other characters,
+    indicating they are symbols.
 
     Args:
-        ch (str): Representing a single character. It is expected to be a single
-            character from a string.
+        ch (str): Representing a single character.
 
     Returns:
-        bool: True if the input character is a symbol (not a digit or a decimal
-        point), and False otherwise.
+        bool: True if the input character is not a digit or a dot, and False otherwise.
 
     """
     if ch.isdigit() or ch == ".":
@@ -41,20 +40,23 @@ def get_number(i, j, lines):
 
 def get_surrounding_numbers(i, j, lines):
     """
-    Recursively retrieves a list of numbers in a specified position's surrounding
-    cells within a 2D grid.
+    Returns a list of numbers found in the surrounding cells of a given position
+    `(i, j)` within a 2D grid of lines, considering both horizontal and vertical
+    neighbors, as well as diagonals when the immediate horizontal or vertical
+    neighbors are not numbers.
 
     Args:
-        i (int): Used to represent the row index of a grid of numbers.
-        j (int): Used to represent the column or x-coordinate of a cell in a 2D grid.
-        lines (List[List[str]]): Used to represent a 2D grid of strings, where
-            each inner list represents a row of the grid and each string in the
-            inner list represents a cell in the row.
+        i (int): Used to represent the row index of a grid of numbers, where the
+            top row is at index 0.
+        j (int): Used as the column index in the 2D list `lines` to access elements
+            at a specific x-coordinate.
+        lines (List[List[str]]): Representing a 2D grid of strings, where each
+            string is a character or digit from a text representation of a Sudoku
+            puzzle.
 
     Returns:
-        List[int]: A list of integers representing the numbers found in the
-        surrounding cells of the grid at position (i, j), including diagonals, if
-        they contain digits.
+        List[int]: A list of integers representing the numbers surrounding a given
+        position in a 2D grid, excluding non-digit characters.
 
     """
     surrounding_numbers = []

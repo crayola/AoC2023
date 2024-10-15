@@ -4,22 +4,22 @@ S_TILE = "|"
 
 def find_next(previous, current, lines):
     """
-    Determines the next position of an object based on its current position and
-    the tile it is on. It handles movement along vertical lines, horizontal lines,
-    and specific shapes ("L", "J", "7", and "F") by adjusting the object's position
-    accordingly.
+    Determines the next position in a grid based on the current position and the
+    type of tile at that position. It uses a combination of tile types and previous
+    position to calculate the new position.
 
     Args:
         previous (Tuple[int, int]): Representing the coordinates of the previous
-            position of a character in a grid.
-        current (Tuple[int, int]): Representing the coordinates of the current
-            position in a grid.
-        lines (List[List[str]]): Containing a 2D grid of strings where each string
-            represents a tile in a map.
+            position in the grid, likely a 2D maze.
+        current (Tuple[int, int]): Representing the current position in a grid,
+            with its coordinates specified by two integers, the row (`current[0]`)
+            and the column (`current[1]`).
+        lines (List[List[str]]): Representing a 2D grid of characters, where each
+            character at position `(i, j)` in the grid is accessed as `lines[i][j]`.
 
     Returns:
-        Tuple[int,int]: A two-dimensional coordinate representing the next position
-        in a grid.
+        Tuple[int,int]: A pair of coordinates representing the position to move
+        to next.
 
     """
     tile = lines[current[0]][current[1]]

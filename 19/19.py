@@ -5,30 +5,30 @@ INPUT = "input"
 
 class Part:
     """
-    Represents a part with ratings, where ratings are key-value pairs. It calculates
-    the total value of the ratings and has methods to apply the part to workflows,
-    navigating through the workflow graph based on the destination specified by
-    the part's ratings.
+    Represents a part with ratings, calculates its total value, and applies a
+    workflow based on its current destination.
 
     Attributes:
-        ratings (Dict[str,int]): Populated by parsing a string representation of
-            ratings, where each rating is a key-value pair separated by an equals
-            sign and enclosed in a dictionary, and then converted to a dictionary
-            of integers.
-        value (int): Calculated by summing the values of all ratings associated
-            with the part.
+        ratings (Dict[str,int]): Initialized with a dictionary comprehension that
+            extracts key-value pairs from a string representation of ratings, where
+            each key-value pair is separated by an equals sign and each key-value
+            pair is separated by a comma.
+        value (int): Calculated by summing the values of the ratings stored in the
+            `ratings` dictionary.
 
     """
     def __init__(self, part_str: str):
         """
-        Initializes the object with a string representation of ratings. It parses
-        the input string into a dictionary where keys are rating names and values
-        are corresponding integer values. The sum of all ratings is stored as the
-        object's value.
+        Initializes an object of the Part class with a given string representation
+        of ratings. It parses the string, extracts key-value pairs, converts values
+        to integers, and stores them in the ratings dictionary. The sum of all
+        ratings is stored in the value attribute.
 
         Args:
-            part_str (str*): Expected to be a string containing a list of ratings
-                in the format "key=value,key=value,...".
+            part_str (str*): Extracted from a string that contains a collection
+                of ratings in key-value format, enclosed within curly braces and
+                separated by commas, where each key-value pair is separated by an
+                equals sign.
 
         """
         self.ratings = {
@@ -41,15 +41,15 @@ class Part:
 
     def apply(self, workflows):
         """
-        Navigates a workflow graph by recursively applying the `apply` method to
-        the current destination node until it reaches a node labeled "A" or "R",
-        then returns the final destination node.
+        Traverses a directed graph of workflows, starting from an initial node
+        "in", until it reaches either node "A" or node "R".
 
         Args:
-            workflows (Dict[str, Workflow]): Accessed by its keys.
+            workflows (Dict[str, Workflow]): Used as a mapping of string keys to
+                Workflow objects.
 
         Returns:
-            str: The destination, either 'A' or 'R'.
+            str: Either "A" or "R" after traversing the workflows dictionary.
 
         """
         dest = "in"
@@ -64,36 +64,38 @@ class Part:
 class Rule:
     """
     Represents a decision-making rule with a criterion and a destination. It can
-    parse rules from strings, apply them to `Part` objects, and reverse the rule's
-    comparison operator.
+    be initialized from a string, applied to a `Part` object, reversed, and
+    represented as a string. The rule checks if a value meets a condition and
+    directs the flow accordingly.
 
     Attributes:
-        str (str): Assigned the value of the `rule_str` parameter passed to the
-            `__init__` method. It is used to store the original string representation
-            of the rule.
-        criterion (str|None): Used to store the condition of the rule. It contains
-            information about the rating, comparison operator, and value.
-        dest (str|int): Used to store the destination of a rule, which is either
-            the destination string when a criterion is not specified or the
-            identifier of a part when a criterion is specified.
-        rating (str): Extracted from the `criterion` string which represents a
-            character rating in the format of a single character followed by a
-            comparison operator and a value.
-        comp (str|None): Used to represent the comparison operator in a rule. It
-            can be either ">" for greater than or "<" for less than, or None for
-            a terminal rule.
-        value (int): Extracted from the criterion string by taking all characters
-            from the third index onwards of the `criterion` string.
+        str (str): Initialized with the `rule_str` parameter in the `__init__` method.
+        criterion (str|None): Used to store the first part of a rule string that
+            contains a comparison operator. It can be either a string containing
+            a rating, comparison operator, and value or None for terminal rules.
+        dest (str|int): Initialized with the right-hand side of a rule string,
+            which is either another rule string when the rule string contains a
+            colon, or the rule string itself when the rule string does not contain
+            a colon.
+        rating (str): Extracted as the first character of the `criterion` string,
+            representing a rating category.
+        comp (str|None): Used to store the comparison operator. It can be either
+            ">" for greater than, "<" for less than, or None if the rule is a
+            terminal rule.
+        value (int): Extracted from the criterion string, which is the substring
+            of the criterion starting from the third character.
 
     """
     def __init__(self, rule_str: str):
         """
-        Initialize the object's attributes based on the input rule string. If the
-        string contains a colon, it is assumed to be in the format "Rc:dest" where
-        Rc is a rating, a comparison operator, and a value, otherwise it is a destination.
+        Initializes the object with a rule string. If the string contains a colon,
+        it extracts the criterion, destination, rating, comparison operator, and
+        value. Otherwise, it sets the criterion to None and the destination to the
+        rule string.
 
         Args:
-            rule_str (str*): Required for the function to execute properly.
+            rule_str (str*): Used to initialize the object with a rule string that
+                can be either a criterion specification or a destination.
 
         """
         if ":" in rule_str:
@@ -110,17 +112,17 @@ class Rule:
 
     def apply(self, part: Part):
         """
-        Evaluates a rule based on the provided part and applies it to the ratings
-        of the part. It checks if the rating of the specified attribute meets the
-        defined condition (greater than or less than a specified value) if a
-        criterion is provided.
+        Evaluates a rule based on a given part and its ratings. If a criterion is
+        set, it checks if the rating of the part at the specified index meets the
+        comparison condition with the given value.
 
         Args:
-            part (Part*): Passed to the function, presumably to be evaluated against
-                a set of criteria.
+            part (Part*): Passed to the `apply` function to be evaluated against
+                the function's criteria.
 
         Returns:
-            bool: `True` if the part meets the specified criterion, and `False` otherwise.
+            bool: True if the part meets the specified criterion, false otherwise,
+            depending on the comparison operator and the value of the part's rating.
 
         """
         if self.criterion:
@@ -133,10 +135,29 @@ class Rule:
             return True
 
     def reverse(self):
+        """
+        Reverses the order of parentheses in a given rule string by replacing all
+        occurrences of '>' with '(' and '<' with ')'.
+
+        Returns:
+            Rule: An instance of the Rule class, created by replacing all occurrences
+            of ">" with "(" and "<" with ")" in the string stored in the object's
+            `str` attribute.
+
+        """
         reversed_rule = Rule(self.str.replace(">", "(").replace("<", ")"))
         return reversed_rule
 
     def __repr__(self):
+        """
+        Returns a string representation of the Rule object, indicating whether it
+        is a terminal rule or has a criterion, and its destination.
+
+        Returns:
+            str: A string describing the object, specifically a rule, including
+            the criterion and destination.
+
+        """
         return (
             f"Rule: {self.criterion if self.criterion else 'Terminal'} => {self.dest}"
         )
@@ -144,39 +165,63 @@ class Rule:
 
 class Worflow:
     """
-    Represents a workflow with a set of rules. It initializes a workflow from a
-    string, applies rules to a part, and identifies winning rules by recursively
-    aggregating rules based on their criteria and destinations.
+    Represents a workflow with a set of rules. It takes a string defining the
+    workflow and its rules, applies these rules to a given `part`, and identifies
+    the rules that win based on specific criteria.
 
     Attributes:
-        name (str): Extracted from the input string `workflow_str` by splitting
-            it at the first occurrence of '{' after removing trailing '}'.
-        rules (List[Rule]): Populated with objects of type Rule, which are created
-            from a string of rules in the workflow definition.
+        name (str): Set to the string before the first '{' character in the input
+            `workflow_str`, which is stripped of trailing '}' characters.
+        rules (List[Rule]): Populated with Rule objects during the initialization
+            of the Workflow instance.
 
     """
     def __init__(self, workflow_str: str):
+        """
+        Initializes an instance of Worflow by parsing a workflow string. It extracts
+        the workflow name and a string of rules, then splits the rules string into
+        individual rules and creates a list of Rule objects.
+
+        Args:
+            workflow_str (str*): Expected to be a string representing a workflow,
+                which is a structured format containing a name and a list of rules
+                enclosed in curly brackets.
+
+        """
         self.name, rules_str = workflow_str.strip("}").split("{")
         self.rules = [Rule(rule) for rule in rules_str.split(",")]
 
     def apply(self, part: Part):
+        """
+        Iterates over a list of rules, applies each rule to a given Part, and
+        returns the destination Part if a rule matches.
+
+        Args:
+            part (Part*): Represented by the name `part`, indicating it is a part
+                of a larger entity.
+
+        Returns:
+            Part|None: Defined as the destination Part object of the first rule
+            that successfully applies to the given part.
+
+        """
         for rule in self.rules:
             if rule.apply(part):
                 return rule.dest
 
     def rules_that_win(self, rules=List[Rule]):
         """
-        Identifies winning rules by recursively applying given rules and their
-        reversals to a workflow, aggregating results based on rule destinations
-        and criteria.
+        Generates all possible combinations of rules that lead to a winning outcome
+        by recursively exploring different paths based on the destination of each
+        rule.
 
         Args:
-            rules (List[Rule]): Optional, with a default value of an empty list.
-                It represents a collection of rules to be evaluated.
+            rules (List[Rule]): Optional, having a default value of an empty list
+                of rules. It represents a collection of rules to be processed.
 
         Returns:
-            List[List[Rule]]: A list of all possible combinations of winning rules
-            that lead to a successful outcome.
+            List[Dict[str,List[Rule]]]: A list of winning rule combinations. Each
+            combination is a list of rules that meet the specified criteria.
 
         """
         winning_rules = []
@@ -204,12 +249,12 @@ class Worflow:
 
     def __repr__(self):
         """
-        Returns a string representation of the Workflow object, including its name
-        and rules, formatted as a multi-line string.
+        Provides a string representation of the object, including its name and
+        rules, for debugging and logging purposes.
 
         Returns:
-            str: A formatted string representation of the object, including its
-            name and rules, suitable for debugging or logging purposes.
+            str: A formatted string representing the Workflow object, including
+            its name and rules.
 
         """
         return f"""
@@ -220,13 +265,15 @@ Rules:
 
 class Criteria:
     """
-    Calculates the number of possible values for a given set of criteria based on
-    a specific rule format. It parses rules to determine valid character ranges
-    and returns the total number of possible combinations for a set of criteria.
+    Enables the calculation of possible combinations of characters in a string
+    based on given rules. It counts the possible positions of each character in a
+    string, considering criteria like "<" and ">" for minimum and maximum values,
+    and "(" and ")" for fixed positions.
 
     Attributes:
-        criteria (List[str]): Populated with a list of strings representing the
-            criteria extracted from the `rules` parameter in the `__init__` method.
+        criteria (List[str]): Initialized with a list of strings extracted from
+            the `rules` parameter in the `__init__` method, where each string is
+            a criterion.
 
     """
     def __init__(self, rules=List[Rule]):
@@ -234,16 +281,16 @@ class Criteria:
 
     def count_possible(self, c: chr):
         """
-        Calculates the number of possible values for a given character within a
-        set of criteria, represented as strings with a character and a symbol (<,
-        >, (, or )) indicating the range.
+        Calculates the number of possible values for a given character c in a
+        criteria set. It determines the minimum and maximum possible values based
+        on the criteria set and returns the count of possible values within that
+        range.
 
         Args:
-            c (chr*): Used as the character prefix to identify criteria in `self.criteria`.
+            c (chr*): Used as a character to determine the range of possible values.
 
         Returns:
-            int: The number of possible values for a given character `c` based on
-            its criteria.
+            int: The number of possible values for a given character `c`.
 
         """
         c_min = max(
@@ -260,12 +307,12 @@ class Criteria:
 
     def count_all_possible(self):
         """
-        Calculates the total number of possible combinations of the letters "s",
-        "a", "m", and "x".
+        Calculates the total number of possible combinations by multiplying the
+        counts of each possible character ("s", "a", "m", "x") together.
 
         Returns:
-            int: The product of four counts, each obtained by calling `count_possible`
-            with a different character: "s", "a", "m", and "x".
+            int: The product of the counts of four possible strings, namely "s",
+            "a", "m", and "x", calculated by the method `count_possible`.
 
         """
         return (
