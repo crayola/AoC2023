@@ -1,15 +1,15 @@
 def get_prediction(line):
     """
-    Calculates a prediction based on a given input `line`. It generates a series
-    of differences in the input values and sums the last value of each difference
-    series to produce the prediction.
+    Calculates a prediction based on a given input `line` by iteratively applying
+    a difference operation and summing the resulting values.
 
     Args:
-        line (List[int]): Represented as a list of integers, where each integer
-            in the list represents a value in a sequence.
+        line (List[int]): Assumed to be a list of consecutive integers representing
+            a sequence where each integer is the difference between two adjacent
+            elements in the sequence.
 
     Returns:
-        int: A prediction based on the input sequence `line`.
+        int: Predicted based on a sequence of numbers input as a list `line`.
 
     """
     diff = [line]
@@ -26,19 +26,17 @@ def get_prediction(line):
 def get_postdiction(line):
     """
     Calculates the postdiction of a given sequence. It iteratively computes
-    differences between elements in the sequence, stops when differences are
-    constant, and then calculates the final postdiction by summing up differences
-    in reverse order.
+    differences between consecutive elements at each level, until all elements at
+    a level are identical. The postdiction is then calculated by summing these
+    differences in reverse order.
 
     Args:
-        line (List[int]): Represented as a list of integers, presumably representing
-            a sequence of values.
+        line (List[int]): Assumed to represent a list of consecutive integer values,
+            likely representing a sequence of numbers with some pattern or trend.
 
     Returns:
-        int: The difference between the first element of the last difference list
-        and the initial prediction, calculated by subtracting the previous prediction
-        from the first element of each difference list, working backwards from the
-        last list.
+        int: A prediction based on the differences in a given sequence, specifically
+        the last difference that would result in a single unique value in the sequence.
 
     """
     diff = [line]

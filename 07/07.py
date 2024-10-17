@@ -4,17 +4,17 @@ from functools import cmp_to_key
 
 def identify_nonjoker_hand_type(c):
     """
-    Determines the type of a poker hand based on the count of each card rank. It
-    returns a value from 0 to 6, where 6 represents a straight flush, 5 a four of
-    a kind, and so on, down to 0 for a high card hand.
+    Determines the type of a poker hand based on the count of each card rank,
+    excluding the joker. It returns an integer value representing the hand type,
+    ranging from 0 (no pairs) to 6 (five of a kind).
 
     Args:
-        c (Dict[int, int]): Represented as a dictionary where keys are card ranks
-            (integer values) and values are their respective counts in a hand of
-            cards.
+        c (Dict[int, int]): Representing a dictionary where keys are card ranks
+            and values are their respective counts in a hand of cards.
 
     Returns:
-        int: An integer representing the type of a non-joker poker hand.
+        int: Representing a hand type in a card game, with values ranging from 0
+        to 6, indicating different hand types such as a pair, three of a kind, etc.
 
     """
     maxcount = max(c.values())
@@ -34,20 +34,18 @@ def identify_nonjoker_hand_type(c):
 
 def identify_hand_type(h, part):
     """
-    Classifies poker hands into specific types based on their composition of cards
-    and jokers. It takes a hand of cards and a part identifier as input and returns
-    a unique integer representing the hand type.
+    Determines the type of hand based on a given poker hand and its part, considering
+    both Joker and non-Joker hands. It uses a counter to count the occurrences of
+    each card and a helper function to identify non-Joker hand types.
 
     Args:
-        h (str): Used to represent a poker hand, presumably consisting of a
-            combination of card values and possibly "J" to represent a joker.
-        part (int): Used to determine the hand type when a joker is present. It
-            is used as a condition to decide the hand type based on the number of
-            jokers in the hand.
+        h (str | List[str]): Representing a poker hand, where each character in
+            the string or each element in the list represents a card in the hand.
+        part (int): Used to determine the specific hand type when the hand contains
+            jokers.
 
     Returns:
-        int: An integer representing the type of hand in a card game, with higher
-        values indicating stronger hands.
+        int: A numerical identifier representing the type of poker hand.
 
     """
     c = Counter(h)
@@ -72,25 +70,22 @@ def identify_hand_type(h, part):
 
 def compare_cards(c1, c2, part):
     """
-    Compares the priority of two cards in a given game part. It uses a predefined
-    ordering string to determine the relative values of the cards, returning -1
-    if the first card has lower priority, 1 if it has higher priority, and 0 if
-    they have equal priority.
+    Compares two cards in a standard deck based on their ranking. It returns -1
+    if the first card has a higher rank, 1 if the second card has a higher rank,
+    and 0 if the ranks are equal, depending on the specified part of the deck.
 
     Args:
-        c1 (str): Representing the rank of the first card to be compared, where
-            the rank can be any of the letters A, K, Q, J, T, 9, 8, 7, 6, 5, 4,
-            or 3.
-        c2 (str): Used to represent the rank of a card to be compared with the
-            rank of another card, c1.
-        part (int): Used to determine the ordering of cards in a poker game. It
-            is used to decide whether to include the Jack (J) in the ordering, as
-            its position is different in two-part and three-part ordering systems.
+        c1 (str): A card rank, which can be any of the characters A, K, Q, J, T,
+            9, 8, 7, 6, 5, 4, or 3.
+        c2 (str): Representing the rank of a second card in a card game.
+        part (int): Determining the ordering of card values. A value of 1 corresponds
+            to a standard ordering where Jack is lower than Ten, while a value of
+            2 corresponds to a non-standard ordering where Jack is higher than Ten.
 
     Returns:
-        int: -1 if the first card has a lower ranking than the second,
-        1 if the first card has a higher ranking than the second,
-        or 0 if the two cards have the same ranking.
+        int: -1 if the first card is of lower rank than the second card,
+        1 if the first card is of higher rank than the second card,
+        or 0 if both cards have the same rank.
 
     """
     ordering = "AKQJT98765432" if part == 1 else "AKQT98765432J"
@@ -104,22 +99,23 @@ def compare_cards(c1, c2, part):
 
 def compare_hands(h1, h2, part):
     """
-    Compares two poker hands, `h1` and `h2`, based on their types and individual
-    card values. It returns 1 if `h1` is higher, -1 if `h2` is higher, and 0 if
-    they are equal.
+    Compares two poker hands of a specified part (e.g., high card, pair, two pair)
+    and returns a value indicating the relative strength of the hands: 1 if the
+    first hand is stronger, -1 if the second hand is stronger, and 0 if they are
+    equal.
 
     Args:
-        h1 (List[Card]): Presumably a list of 5 cards representing a poker hand.
-        h2 (List[Dict[str, any]]): Represented as a list of five dictionaries,
-            each dictionary containing information about a card in the hand, such
-            as its type or rank.
-        part (str): Passed to the `identify_hand_type` and `compare_cards` functions.
-            Its purpose is to specify the part of the hand being compared, such
-            as the high card or the kicker.
+        h1 (List[Card]): Represented as a list of five elements, each element being
+            a Card object.
+        h2 (List[Card]): Represented by the variable `h2` in the function. It
+            represents the second hand being compared to the first hand.
+        part (str): Used as an argument in the `identify_hand_type` and `compare_cards`
+            functions, possibly to specify the type of comparison to be made, such
+            as the community cards in a poker game.
 
     Returns:
-        int: 1 if the first hand is stronger than the second,
-        -1 if the first hand is weaker, and
+        int: -1 if the first hand is weaker than the second hand,
+        1 if the first hand is stronger than the second hand,
         0 if the hands are equal.
 
     """

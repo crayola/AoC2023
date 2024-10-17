@@ -1,20 +1,21 @@
 def get_mapped_value(x, map_list):
     """
-    Returns a mapped value based on a given input `x` and a list of mappings
-    `map_list`. Each mapping in `map_list` is a tuple of three values: a base value
-    and a range with a start and end value.
+    Calculates a mapped value by adjusting a given number `x` based on a mapping
+    list `map_list`. It searches for the first mapping where `x` falls within a
+    specified range and applies the corresponding offset to `x`.
 
     Args:
-        x (int): Interpreted as a value to be mapped. It is compared to a range
-            of values in the `map_list` to determine the mapped result.
-        map_list (List[Tuple[int, int, int]]): Used to store a list of mappings,
-            where each mapping is a tuple of three integers representing a range
-            and a shift. The range is defined by a start and end value, and the
-            shift is the value to be added to any input within the range.
+        x (int): Represented as a value to be mapped according to the rules specified
+            in the `map_list`.
+        map_list (List[Tuple[int, int, int]]): Populated with 3-element tuples.
+            Each tuple contains three integers: the first integer represents the
+            mapped value, the second integer represents the start of a range, and
+            the third integer represents the length of the range.
 
     Returns:
-        int|str: The mapped value of input `x` based on the provided `map_list`
-        if `x` falls within a specified range, otherwise it returns `x` unchanged.
+        int|str: The mapped value of the input `x` based on the given `map_list`,
+        where each element in `map_list` represents a mapping with a range `[m[1],
+        m[1] + m[2]]` and a corresponding value `m[0]`.
 
     """
     for m in map_list:
@@ -26,20 +27,21 @@ def get_mapped_value(x, map_list):
 
 def get_mapped_ranges(range, map_list):
     """
-    Calculates the overlapping ranges between a given range and a list of mapped
-    ranges, returning a list of new ranges that result from the overlap.
+    Generates a list of non-overlapping time ranges by mapping a given range onto
+    a list of intervals with varying durations, ensuring the mapped ranges do not
+    overlap with any intervals and cover the entire given range.
 
     Args:
-        range (List[int]): Represented by a list of two integers, where the first
-            integer is the start of the range and the second integer is the length
-            of the range.
-        map_list (List[Tuple[int, int, int]]): Composed of non-overlapping intervals,
-            where each interval is a tuple of three integers representing the
-            start, end, and width of the interval.
+        range (List[int]): Represented by a list of two integers. It defines a
+            time interval from the first integer to the end at the second integer.
+        map_list (List[Tuple[int, int, int]]): Represented as a list of tuples,
+            where each tuple contains three integers. These integers appear to
+            represent a start point, a duration, and possibly a width or height,
+            but the exact meaning is unclear without further context.
 
     Returns:
-        List[List[int]]: A list of non-overlapping integer ranges that cover the
-        entire input range, taking into account the constraints imposed by the map_list.
+        List[List[int]]: A list of sub-ranges that map the given input range to
+        the specified range within the provided list of maps.
 
     """
     mapped_ranges = []
@@ -66,18 +68,21 @@ def get_mapped_ranges(range, map_list):
 
 def get_all_mapped_ranges(range_list, map_list):
     """
-    Takes a list of ranges and a list of mappings, recursively applies the mappings
-    to each range, and returns a list of all resulting mapped ranges.
+    Iterates over a list of ranges, applies a mapping function to each range using
+    `get_mapped_ranges`, and accumulates the results into a single list of mapped
+    ranges.
 
     Args:
-        range_list (List[Range]): Expected to contain one or more ranges, where a
-            range is likely a data structure representing a sequence of values.
-        map_list (List[Dict[int, int]]): Used to store mappings of original range
-            values to their corresponding mapped values.
+        range_list (List[Dict[str, int]]): Expected to be a list of dictionaries
+            where each dictionary represents a range with string keys and integer
+            values.
+        map_list (List[Dict[int, int]]): Presumably a list of dictionaries, where
+            each dictionary represents a mapping from the original range to a new
+            range.
 
     Returns:
-        List[Dict[int,int]]: A list of dictionaries, where each dictionary contains
-        a mapped range.
+        List[Dict[str,int]]: A list of dictionaries, where each dictionary represents
+        a mapped range with its start and end values.
 
     """
     mapped_ranges = []

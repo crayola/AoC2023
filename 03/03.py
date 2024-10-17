@@ -5,15 +5,15 @@ input_path = Path("./input")
 
 def is_symbol(ch):
     """
-    Determines if a given character is a symbol, considering it as a symbol if it
-    is not a digit and not a decimal point.
+    Determines whether a given character is a symbol, excluding digits and periods.
+    It returns `True` for all characters except digits and periods, which are
+    considered symbols in this context.
 
     Args:
-        ch (str): Representing a character, typically a single Unicode code point,
-            that is being evaluated to determine if it is a symbol.
+        ch (str): Represented as a single character.
 
     Returns:
-        bool: True if the input character is not a digit or a decimal point, and
+        bool: True if the input character is a non-digit and not a period, and
         False otherwise.
 
     """
@@ -41,22 +41,20 @@ def get_number(i, j, lines):
 
 def get_surrounding_numbers(i, j, lines):
     """
-    Returns a list of digits surrounding a given position in a 2D grid of lines.
-    It checks the immediate neighbors (up, down, left, right) and their diagonals
-    for digits.
+    Recursively retrieves all numbers in the surrounding cells of a given position
+    on a grid, considering both horizontal and vertical neighbors, as well as
+    diagonals when the immediate top neighbor is not a number.
 
     Args:
-        i (int): Used to identify the row index in the `lines` list, where `lines`
-            is a list of strings, each representing a row in a grid.
-        j (int): Used to represent the column index of a 2D list `lines`. It
-            determines the position of a number in the grid.
-        lines (List[List[str]]): Representing a 2D list of strings, where each
-            inner list represents a line in a grid, and each string represents a
-            character in that line.
+        i (int): Used to represent the row index of a cell in a two-dimensional
+            grid or list of lines.
+        j (int): Used to represent the column index in a 2D list (`lines`) of a
+            number to be checked for surrounding numbers.
+        lines (List[List[str]]): Expected to represent a 2D grid or matrix of strings.
 
     Returns:
-        List[int]: A list of integers representing the numbers surrounding a given
-        position in a 2D list of strings.
+        List[int]: A list of surrounding numbers found at the specified position
+        `(i, j)` in the given `lines`.
 
     """
     surrounding_numbers = []

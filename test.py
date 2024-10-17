@@ -1,13 +1,14 @@
 def sum2(a,b):
     """
-    Accepts two arguments, `a` and `b`, and returns their sum.
+    Takes two arguments `a` and `b`, and returns their sum.
 
     Args:
-        a (int): Required, as it must be passed when calling the function.
-        b (int): Required.
+        a (int): Required, as it is not specified as optional.
+        b (int): Required to calculate the sum of `a` and `b` when the `sum2`
+            function is called.
 
     Returns:
-        int: The sum of two input arguments a and b.
+        int: The sum of two input integers `a` and `b`.
 
     """
     1

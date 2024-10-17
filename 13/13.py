@@ -5,19 +5,18 @@ INPUT = "input"
 
 def parse(pattern_str):
     """
-    Transforms a string representation of a binary pattern into a 2D numpy array.
-    It replaces "." with "0" and "#" with "1", splits the string into lines,
-    converts each line into a list, and finally converts the lists into a numpy
-    array of integers.
+    Transforms a string representing a pattern into a 2D NumPy array. It replaces
+    dots with zeros and hashes with ones, then splits the string into lines and
+    converts each line into a list of integers.
 
     Args:
-        pattern_str (str | List[str]): Transformed into a 2D list by splitting
-            each line with a newline character, replacing dots with zeros, and
-            replacing hashes with ones.
+        pattern_str (str): Expected to be a multiline string representing a binary
+            pattern, where '.' is replaced with '0' and '#' with '1'.
 
     Returns:
-        npndarray: A 2D array representing the input pattern string, with dots
-        replaced by zeros and hashes replaced by ones.
+        npndarray: A two-dimensional array of integers, where each integer represents
+        a pixel in a binary image, with 0 indicating a background pixel and 1
+        indicating a foreground pixel.
 
     """
     pattern_str = [
@@ -28,22 +27,23 @@ def parse(pattern_str):
 
 def reflection_criterion(array1, array2, part):
     """
-    Checks if two input arrays are identical or differ by exactly one element,
-    depending on the specified part.
+    Determines whether two input arrays satisfy a specific criterion based on their
+    reflection. It checks if the arrays are identical or if their absolute difference
+    sums to 1, depending on the specified part.
 
     Args:
-        array1 (numpy.ndarray): Expected to be a one-dimensional array of numerical
-            values.
-        array2 (numpy.ndarray): Used as a reference for comparison with `array1`
-            to determine whether the reflection criterion is met.
-        part (int): Used to determine which reflection criterion to apply. It can
-            take values 1 or 2, where 1 checks for exact equality and 2 checks if
-            the absolute difference between the elements of the two arrays is 1.
+        array1 (ndarray): Used as one of the two input arrays for comparison
+            purposes. It is expected to be a numpy array.
+        array2 (ndarray): Expected to be a numpy array.
+        part (int): Used to specify the reflection criterion to be applied. It can
+            take two values: 1, indicating an element-wise equality check, and 2,
+            indicating a check for a single element-wise difference of absolute
+            value 1.
 
     Returns:
-        bool|None: True if the arrays match exactly (part 1), or if the absolute
-        difference between corresponding elements in the arrays sums to 1 (part
-        2), otherwise None is returned.
+        bool: True if the arrays are identical, and False otherwise for part 1, and
+        True if the absolute difference between the arrays sums up to 1, and False
+        otherwise for part 2.
 
     """
     if part == 1:
@@ -54,22 +54,20 @@ def reflection_criterion(array1, array2, part):
 
 def check_reflections(pattern: np.ndarray, axis: int, part: int) -> bool:
     """
-    Calculates a score based on the presence of reflections in a given pattern
-    along its axes. It iterates over the pattern, checks for reflections at each
-    position, and returns the total score if a reflection is found.
+    Scores the presence of reflections in a 2D array (`np.ndarray`), based on a
+    given `part`. It does this by checking each element against its reflection
+    across both the x and y axes, using a custom `reflection_criterion` function.
 
     Args:
-        pattern (np.ndarray): Represented by a 2D numpy array, which is a
-            multi-dimensional array of numerical values.
-        axis (int): Used to specify the axis along which the reflection check is
-            performed. It can have two possible values: 0 or 1.
-        part (int): Passed to the `reflection_criterion` function, which is used
-            to determine whether the reflection criterion is met for the arrays
-            `before_array` and `after_array`.
+        pattern (np.ndarray): Represented as a multi-dimensional array of numerical
+            values.
+        axis (int): Used to specify the dimension along which the pattern is checked
+            for reflections.
+        part (int): Used by the `reflection_criterion` function to evaluate the
+            reflection of two sub-arrays.
 
     Returns:
-        bool: True if the pattern exhibits reflections based on the specified
-        criterion, and False otherwise.
+        bool: True if the pattern exhibits specified reflections and False otherwise.
 
     """
     score = 0

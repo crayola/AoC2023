@@ -5,17 +5,17 @@ INPUT = "input"
 
 def expand_space(space):
     """
-    Adds rows and columns to a given 2D array (`space`) to fill in gaps where all
-    elements are zero, preserving the original data and their positions.
+    Inserts rows and columns into a given 2D array (`space`) to maintain a contiguous
+    structure, ensuring that rows and columns contain at least one non-zero element.
 
     Args:
-        space (ndarray): Represented as a 2D array of integers, where 0 typically
-            denotes an empty space and 1 denotes a filled space, with the shape
-            of the array representing the dimensions of the space.
+        space (np.ndarray): Represented as a 2D array where each element is either
+            0 or 1.
 
     Returns:
-        Tuple[List[int],List[int]]: A pair of lists containing indices of rows and
-        columns that were inserted to expand the input 2D array.
+        Tuple[List[int],List[int]]: A list of integers representing the indices
+        of rows and columns that were added to the input array `space` to ensure
+        it contains no zeros.
 
     """
     expansion_rows = []
@@ -34,29 +34,28 @@ def expand_space(space):
 
 def distance(pos1, pos2, expansion_rows, expansion_columns, expansion_factor):
     """
-    Calculates the Manhattan distance between two points, taking into account
-    additional "expansion" rows and columns with a given factor. It includes the
-    distance between the points and the expanded areas, weighted by the expansion
-    factor.
+    Calculates the Manhattan distance between two positions with an additional
+    factor for rows and columns that have been expanded, where the expansion factor
+    is applied to the number of expanded positions between the two points.
 
     Args:
-        pos1 (Tuple[int, int]): Used to represent the coordinates of a position
-            in a grid, where the first element is the row number and the second
-            element is the column number.
-        pos2 (Tuple[int, int]): Represented as a pair of coordinates in a
-            two-dimensional space, where the first element is the row position and
-            the second element is the column position.
-        expansion_rows (List[int]): Representing a list of rows where expansions
-            occur, likely affecting the distance calculation.
-        expansion_columns (List[int]): Used to calculate the number of columns
-            between two positions that are part of the grid expansion. It contains
-            indices of the columns that are expanded.
-        expansion_factor (float): Used to calculate a weighted penalty for traversing
-            through expanded rows and columns.
+        pos1 (Tuple[int, int]): Represented as a pair of integers, where the first
+            integer represents a row position and the second integer represents a
+            column position.
+        pos2 (Tuple[int, int]): Represented as a pair of integers, where the first
+            integer is the row position and the second integer is the column position.
+        expansion_rows (List[int]): Represented as a list of integers, where each
+            integer represents a row in a grid that is considered an expansion area.
+        expansion_columns (List[int]): Used to determine the number of columns in
+            a grid that are considered as obstacles or barriers, affecting the
+            distance calculation.
+        expansion_factor (float): Used to calculate the weighted contribution of
+            expansions to the total distance between two positions. It represents
+            a factor by which the expansion count is multiplied.
 
     Returns:
-        int: A weighted Manhattan distance between two points, taking into account
-        rows and columns with expansions.
+        int: Calculated based on the Manhattan distance between two positions,
+        plus the number of expansions between them, adjusted by an expansion factor.
 
     """
     row_expansions_between = len(
@@ -79,21 +78,19 @@ def distance(pos1, pos2, expansion_rows, expansion_columns, expansion_factor):
 
 def sum_distances(space, expansion_factor):
     """
-    Calculates the total distance between all pairs of points in a given 2D space,
-    where points are represented as 1's in a numpy array, and distances are
-    calculated using the `distance` function, considering an expanded space with
-    a specified expansion factor.
+    Calculates the sum of distances between all pairs of 1s in a given 2D space,
+    taking into account expansion factors for rows and columns.
 
     Args:
-        space (ndarray): 2D, representing a grid or matrix where each element is
-            a point in space, with a value of 1 indicating the presence of a point.
-        expansion_factor (float): Used in the `distance` function to calculate the
-            distance between two points in the expanded space.
+        space (numpy.ndarray): Expected to represent a 2D grid where 1 indicates
+            a point of interest and 0 indicates an empty space.
+        expansion_factor (float): Passed to the `distance` function. It is used
+            to calculate the distance between two points in the expanded space.
 
     Returns:
-        int: The sum of distances between all pairs of 1's in a 2D grid, where the
-        distance between two points is calculated using the `distance` function,
-        taking into account the expansion of the space and a specified factor.
+        float: The sum of distances between all pairs of occupied positions in the
+        input space, excluding pairs where the first position is above or to the
+        right of the second position.
 
     """
     expansion_rows, expansion_columns = expand_space(space)

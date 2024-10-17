@@ -1,16 +1,15 @@
 def calculate_steps(start_position):
     """
-    Determines the minimum number of steps required to navigate from a given start
-    position to the final destination "ZZZ" in a network.
+    Determines the number of steps required to navigate through a network from a
+    given start position to the "ZZZ" position.
 
     Args:
-        start_position (str): Indexed into the `network` dictionary to determine
-            the next position in the sequence based on the current position and
-            the instruction at the current `cursor` index.
+        start_position (str): Initialized with a value representing the starting
+            position in a network.
 
     Returns:
-        int: The total number of steps taken to reach the position "ZZZ" from the
-        given start position.
+        int: The number of steps taken to reach the position "ZZZ" from the given
+        `start_position`.
 
     """
     position = start_position
@@ -27,19 +26,19 @@ def calculate_steps(start_position):
 
 def get_loop(start_position):
     """
-    Determines the loop in a network by tracking the number of steps taken to reach
-    each position. It identifies the shortest path to the 'Z' node, calculates the
-    loop length, and returns the loop start, loop length, and adjusted destination
-    steps.
+    Identifies a loop within a network of nodes, where nodes are connected by
+    instructions, and determines the number of steps required to reach the loop,
+    the loop's length, and the adjusted number of steps to reach each destination
+    node within the loop.
 
     Args:
-        start_position (int): Represented as a 3-element tuple.
+        start_position (Dict[str, int]): Used to initialize the position in the network.
 
     Returns:
-        Dict[str,int|List[int]]: A dictionary containing three keys: "loop_start",
-        "loop_length", and "dest_steps". The values associated with these keys are
-        the start position of the loop, the length of the loop, and a list of steps
-        to reach the destination, respectively.
+        Dict[str,int|List[int]]: A dictionary containing three key-value pairs:
+        - "loop_start": the initial step number of the loop
+        - "loop_length": the total number of steps in the loop
+        - "dest_steps": a list of step numbers from the loop's destination
 
     """
     position = start_position

@@ -6,39 +6,41 @@ INPUT = "input"
 
 class Line:
     """
-    Represents a line of text with operations to manipulate its content. It can
-    be tilted by moving dots between Os, and it tracks the count of Os in the line.
-    The `__repr__` method provides a string representation of the line.
+    Represents a line of characters, allowing for manipulation and analysis of the
+    string. It can simulate the physical action of a line of dominoes, where each
+    '.O' is replaced by 'O.' until the line stabilizes, and tracks the count of
+    'O' characters.
 
     Attributes:
-        line (str): Initialized in the `__init__` method by joining all elements
-            of the `line` parameter into a single string using `"".join(line)`.
+        line (str): Initialized in the `__init__` method. It stores a string
+            representation of the input line, with all characters joined together
+            without any separators.
 
     """
     def __init__(self, line):
         """
-        Initializes the object by joining the input line into a single string.
+        Initializes the Line object by joining the input list of characters into
+        a single string, stored in the `line` attribute.
 
         Args:
-            line (List[str]): Expected to be a list of strings representing
-                individual characters or words in a line of text.
+            line (List[str]): Passed to the function when an instance of the class
+                is created, allowing the `__init__` method to accept a list of strings.
 
         """
         self.line = "".join(line)
 
     def tilt_once(self):
         """
-        Reverses the position of the 'O' character in the line string, swapping
-        it from the end to the start or vice versa, effectively creating a tilt effect.
+        Reverses the orientation of the first character in the line if it is a dot
+        followed by an 'O'. It replaces ".O" with "O.". This effectively "tilts"
+        the line once.
 
         """
         self.line = self.line.replace(".O", "O.")
 
     def tilt(self):
         """
-        Rotates the line by continuously calling the `tilt_once` method until it
-        reaches a stable position, where the line's orientation has not changed
-        since the last call.
+        Repeats the `tilt_once` method until the line's orientation remains unchanged.
 
         """
         pretilt = self.line
@@ -50,24 +52,22 @@ class Line:
     @property
     def o_count(self):
         """
-        Counts the occurrences of the character 'O' in a given line of text.
+        Counts the occurrences of 'O' in the line string attribute of the Line
+        instance, returning the total count.
 
         Returns:
-            int: The count of all occurrences of the character 'O' in the string
-            `self.line`.
+            int: The total count of the character 'O' in the string `self.line`.
 
         """
         return self.line.count('O')
 
     def __repr__(self):
         """
-        Returns a string representation of the Line object, displaying the value
-        of its 'line' attribute.
+        Represents the object in a string format, returning a string that includes
+        the object's line number.
 
         Returns:
-            str: A string representation of the object, specifically in the format
-            "Line: <self.line>" where <self.line> is the value of the object's
-            line attribute.
+            str: A string representation of the object.
 
         """
         return f"Line: {self.line}"
@@ -75,33 +75,34 @@ class Line:
 
 class Platform:
     """
-    Represents a 2D grid of lines, where each line is an instance of the `Line`
-    class. It provides methods to manipulate the grid, including tilting, rotating,
-    and cycling the lines, as well as calculating a score based on the grid's configuration.
+    Represents a 2D grid of lines. It initializes a grid from a string of lines,
+    calculates a score based on line counts, and provides methods to tilt the grid
+    in different directions, mirroring lines as necessary for some tilts.
 
     Attributes:
-        lines (List[Line]): Initialized in the `__init__` method. It contains a
-            list of `Line` objects, one for each row of the platform, with each
-            `Line` object representing a row of characters.
-        cols (List[Line]): Initialized in the `__init__` method by transposing the
-            `lines` attribute, which is a list of `Line` objects, using the `zip`
-            function and the `map` function.
-        n_rows (int): Initialized with the length of the `lines` attribute, which
-            represents the number of rows in the platform.
-        n_cols (int): Derived from the number of columns in the platform, calculated
-            as the length of the `cols` list, which is a list of `Line` objects
-            transposed from the original lines.
+        lines (List[Line]): Initialized in the `__init__` method with a list
+            comprehension. It contains Line objects, created by stripping and
+            splitting the input string into lines, and then reversing the order
+            of the lines after each tilt operation.
+        cols (List[Line]): Created by transposing the `lines` attribute using the
+            built-in `zip` function. This means that each column of the platform
+            is represented as a Line object.
+        n_rows (int): Set to the number of rows in the platform, which is determined
+            by the length of the `self.lines` list in the `__init__` method.
+        n_cols (int): Derived from the length of the `self.cols` list, which is a
+            list of `Line` objects, where each object represents a column of the
+            platform.
 
     """
     def __init__(self, lines):
         """
-        Initialize a Platform instance. It takes a string of lines as input, parses
-        it into a list of Line objects, and creates columns by transposing the
-        lines. It also calculates the number of rows and columns.
+        Initializes the object with a list of lines, strips each line, and creates
+        Line objects. It then transposes the lines to create columns, calculates
+        the number of rows and columns, and stores these values as instance variables.
 
         Args:
-            lines (str | List[str]): Initialized with the contents of a file or a
-                string containing newline-separated lines.
+            lines (str | List[str]): Initialized with a string containing
+                newline-separated lines, where each line is a string.
 
         """
         self.lines = [Line(line.strip()) for line in lines.strip().split('\n')]
@@ -112,13 +113,13 @@ class Platform:
     @property
     def score(self):
         """
-        Calculates a score based on the number of occupied cells in each line of
-        the platform, with each line's contribution weighted by its distance from
-        the top.
+        Calculates a score by iterating over lines in the platform, multiplying
+        the number of remaining rows by the number of occupied cells in each line,
+        and summing these products.
 
         Returns:
-            int: Calculated by multiplying the number of remaining rows by the
-            number of occupied cells in each line and summing these products.
+            int: The total score calculated by summing the products of the line's
+            obstacle count and its distance from the bottom of the platform.
 
         """
         score = 0
@@ -129,21 +130,22 @@ class Platform:
     @property
     def big_string(self):
         """
-        Concatenates the content of all lines in the Platform instance's `lines`
-        attribute into a single string, with each line separated by a newline
-        character, and returns it.
+        Constructs a single string by joining all lines in the Platform's lines
+        attribute, separated by newline characters.
 
         Returns:
-            str|None: A string containing all the lines of a collection of lines,
-            separated by newline characters.
+            str: Generated by joining all lines of text in the `lines` attribute
+            with newline characters, effectively creating a single string containing
+            all the lines.
 
         """
         return "\n".join([line.line for line in self.lines]) 
 
     def tilt_north(self):
         """
-        Tilts each column and then rearranges the lines to be perpendicular to the
-        columns, effectively rotating the platform to face north.
+        Rotates all columns by calling their `tilt` method and then re-generates
+        the lines of the platform by transposing the lines of the columns and
+        re-creating them as a list of Line objects.
 
         """
         for col in self.cols:
@@ -152,9 +154,9 @@ class Platform:
 
     def tilt_south(self):
         """
-        Reverses the line of each column, applies the tilt operation, and then
-        reverses the line back to its original orientation. It then rearranges the
-        lines of the columns into rows.
+        Reverses the order of elements in each column, applies a tilt transformation,
+        and then reverses the elements back to their original order. It then
+        reconstructs the lines of the platform by transposing the columns.
 
         """
         for col in self.cols:
@@ -165,9 +167,8 @@ class Platform:
 
     def tilt_west(self):
         """
-        Rotates each line in the platform to the left by calling the `tilt` method
-        on each line. It then transposes the lines to create new columns and
-        reinitializes the `cols` attribute with the new column objects.
+        Rotates each line in the platform by calling the `tilt` method on each
+        line, then rearranges the lines into vertical columns.
 
         """
         for line in self.lines:
@@ -176,10 +177,10 @@ class Platform:
 
     def tilt_east(self):
         """
-        Reverses each line of the platform, applies a tilt operation, and then
-        reverses the line back to its original state. It then re-generates the
-        columns of the platform by transposing the reversed lines and creating new
-        Line objects.
+        Reverses each line of the platform, applies a tilt transformation to the
+        reversed line, and then reverses the line again to its original orientation.
+        The function also updates the platform's columns by transposing the lines
+        and creating new Line objects.
 
         """
         for line in self.lines:
@@ -190,7 +191,8 @@ class Platform:
 
     def cycle(self):
         """
-        Rotates the platform through four cardinal directions.
+        Rotates the platform through four cardinal directions: north, west, south,
+        and east.
 
         """
         self.tilt_north()
@@ -200,14 +202,12 @@ class Platform:
 
     def __repr__(self):
         """
-        Converts the object into a string representation, displaying each line of
-        the self.lines collection on a separate line, effectively creating a
-        readable, formatted string of the object's contents.
+        Returns a string representation of the Platform instance, consisting of
+        each line in the instance's lines attribute, joined by newline characters.
 
         Returns:
-            str: A string representation of the object, specifically a formatted
-            representation of all lines in the object's `lines` attribute, separated
-            by newline characters.
+            str: A string representation of the object, specifically a multi-line
+            string consisting of the text of all lines in the object.
 
         """
         return "\n".join([line.line for line in self.lines])
@@ -215,18 +215,16 @@ class Platform:
 @cache
 def make_100_cycles(platform_str):
     """
-    Cycles a `Platform` object 100 times based on the input `platform_str`, and
-    returns the resulting `big_string` and `score` attributes of the `Platform`
-    object after the cycles.
+    Cycles a `Platform` object 100 times, with each cycle calling the `cycle`
+    method, and returns the resulting `big_string` and `score` attributes. The
+    `@cache` decorator likely caches function results to improve performance.
 
     Args:
-        platform_str (str): Used to initialize a `Platform` object, which is then
-            used to perform cycles.
+        platform_str (str): Used to create an instance of the `Platform` class,
+            which is then used to generate a big string and a score after 100 cycles.
 
     Returns:
-        Tuple[str,int]: A tuple containing two elements:
-        1/ A string, representing the result of `platform.big_string` after 100 cycles.
-        2/ An integer, representing the result of `platform.score` after 100 cycles.
+        Tuple[str,int]: A tuple containing a big string and a score.
 
     """
     platform = Platform(platform_str)
