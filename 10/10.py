@@ -3,6 +3,28 @@ S_TILE = "|"
 
 
 def find_next(previous, current, lines):
+    """
+    Determines the next position on a grid based on the current tile and previous
+    position. It handles horizontal, vertical, and diagonal movements for different
+    tile types, including L, J, 7, and F, which represent different types of corners
+    or turns.
+
+    Args:
+        previous (Tuple[int, int]): Representing the coordinates of the previous
+            position in a grid. It is used to determine the direction of movement
+            based on the current and previous positions.
+        current (Tuple[int, int]): Representing the coordinates of a tile in a
+            grid, where the first element is the row number and the second element
+            is the column number.
+        lines (List[List[str]]): Represented as a 2D list of strings, where each
+            inner list represents a row of a grid and each string within the inner
+            list represents a tile on that row.
+
+    Returns:
+        Tuple[int,int]: A coordinate representing the next position to move in a
+        grid.
+
+    """
     tile = lines[current[0]][current[1]]
 
     if tile == "|":

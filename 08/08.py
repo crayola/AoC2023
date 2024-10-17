@@ -1,4 +1,17 @@
 def calculate_steps(start_position):
+    """
+    Determines the number of steps required to navigate through a network from a
+    given start position to the "ZZZ" position.
+
+    Args:
+        start_position (str): Initialized with a value representing the starting
+            position in a network.
+
+    Returns:
+        int: The number of steps taken to reach the position "ZZZ" from the given
+        `start_position`.
+
+    """
     position = start_position
     cursor = 0
     steps = 0
@@ -12,6 +25,22 @@ def calculate_steps(start_position):
 
 
 def get_loop(start_position):
+    """
+    Identifies a loop within a network of nodes, where nodes are connected by
+    instructions, and determines the number of steps required to reach the loop,
+    the loop's length, and the adjusted number of steps to reach each destination
+    node within the loop.
+
+    Args:
+        start_position (Dict[str, int]): Used to initialize the position in the network.
+
+    Returns:
+        Dict[str,int|List[int]]: A dictionary containing three key-value pairs:
+        - "loop_start": the initial step number of the loop
+        - "loop_length": the total number of steps in the loop
+        - "dest_steps": a list of step numbers from the loop's destination
+
+    """
     position = start_position
     cursor = 0
     steps = 0

@@ -1,4 +1,17 @@
 def get_prediction(line):
+    """
+    Calculates a prediction based on a given input `line` by iteratively applying
+    a difference operation and summing the resulting values.
+
+    Args:
+        line (List[int]): Assumed to be a list of consecutive integers representing
+            a sequence where each integer is the difference between two adjacent
+            elements in the sequence.
+
+    Returns:
+        int: Predicted based on a sequence of numbers input as a list `line`.
+
+    """
     diff = [line]
     depth = 0
     while len(set(diff[depth])) != 1:
@@ -11,6 +24,21 @@ def get_prediction(line):
 
 
 def get_postdiction(line):
+    """
+    Calculates the postdiction of a given sequence. It iteratively computes
+    differences between consecutive elements at each level, until all elements at
+    a level are identical. The postdiction is then calculated by summing these
+    differences in reverse order.
+
+    Args:
+        line (List[int]): Assumed to represent a list of consecutive integer values,
+            likely representing a sequence of numbers with some pattern or trend.
+
+    Returns:
+        int: A prediction based on the differences in a given sequence, specifically
+        the last difference that would result in a single unique value in the sequence.
+
+    """
     diff = [line]
     depth = 0
     while len(set(diff[depth])) != 1:

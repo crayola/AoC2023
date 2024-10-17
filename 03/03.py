@@ -4,6 +4,19 @@ input_path = Path("./input")
 
 
 def is_symbol(ch):
+    """
+    Determines whether a given character is a symbol, excluding digits and periods.
+    It returns `True` for all characters except digits and periods, which are
+    considered symbols in this context.
+
+    Args:
+        ch (str): Represented as a single character.
+
+    Returns:
+        bool: True if the input character is a non-digit and not a period, and
+        False otherwise.
+
+    """
     if ch.isdigit() or ch == ".":
         return False
     else:
@@ -27,6 +40,23 @@ def get_number(i, j, lines):
 
 
 def get_surrounding_numbers(i, j, lines):
+    """
+    Recursively retrieves all numbers in the surrounding cells of a given position
+    on a grid, considering both horizontal and vertical neighbors, as well as
+    diagonals when the immediate top neighbor is not a number.
+
+    Args:
+        i (int): Used to represent the row index of a cell in a two-dimensional
+            grid or list of lines.
+        j (int): Used to represent the column index in a 2D list (`lines`) of a
+            number to be checked for surrounding numbers.
+        lines (List[List[str]]): Expected to represent a 2D grid or matrix of strings.
+
+    Returns:
+        List[int]: A list of surrounding numbers found at the specified position
+        `(i, j)` in the given `lines`.
+
+    """
     surrounding_numbers = []
     if lines[i - 1][j].isdigit():
         surrounding_numbers.append(get_number(i - 1, j, lines))

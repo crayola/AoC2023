@@ -2,6 +2,20 @@ from collections import defaultdict
 
 
 def calculate_intersect_size(card: str):
+    """
+    Calculates the size of the intersection between two sets of cards, which are
+    split from a single string input. It separates the input into two sets, finds
+    their intersection, and returns the number of common elements.
+
+    Args:
+        card (str): Expected to be a string containing two separated card hands,
+            each described as a space-separated list of cards, joined by the "|"
+            character.
+
+    Returns:
+        int: The size of the intersection between two sets of cards.
+
+    """
     winning, draw = [x.split() for x in card.split("|")]
     intersect = set(winning) & set(draw)
     return len(intersect)
